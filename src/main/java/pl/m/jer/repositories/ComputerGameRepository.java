@@ -1,8 +1,10 @@
-package pl.m.jer;
+package pl.m.jer.repositories;
+
+import pl.m.jer.ComputerGame;
 
 import java.util.List;
 
-public interface ComputerGameRepo {
+public interface ComputerGameRepository {
 
     void addGame(ComputerGame game);
     void deleteGame(int id);
