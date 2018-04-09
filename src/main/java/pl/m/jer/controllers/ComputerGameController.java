@@ -1,16 +1,24 @@
-package pl.m.jer;
+package pl.m.jer.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.m.jer.ComputerGame;
+import pl.m.jer.repositories.ComputerGameRepository;
+import pl.m.jer.repositories.ListComputerGameRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 public class ComputerGameController {
 
-    ComputerGameRepository computerGamesList = new ComputerGameRepository();
+    private ListComputerGameRepository computerGamesList = new ListComputerGameRepository();
+
+    @Autowired
+    private ComputerGameRepository computerGameRepository;
 
     private Boolean areValuesEmpty(ComputerGame computerGame) {
         return (computerGame.getGameName() == null || computerGame.getGameName().isEmpty()) ||
@@ -19,6 +27,11 @@ public class ComputerGameController {
                 (computerGame.getManufacturer() == null || computerGame.getManufacturer().isEmpty());
     }
 
+    private Boolean numericValidate(ComputerGame computerGame) {
+        return computerGame.getAllowedAge().equals(0) || computerGame.getAllowedAge() < 0;
+    }
+
+    @Transactional
     @RequestMapping("/games")
     public List<ComputerGame> getAllComputerGames(@RequestParam(value = "filter", required = false, defaultValue = "") String namePhrase) {
 
@@ -30,7 +43,7 @@ public class ComputerGameController {
 
     @PostMapping("/games")
     private ResponseEntity addComputerGame(@RequestBody ComputerGame computerGame) {
-        if (areValuesEmpty(computerGame)) {
+        if (areValuesEmpty(computerGame) || numericValidate(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             computerGamesList.addGame(computerGame);
@@ -41,7 +54,7 @@ public class ComputerGameController {
     @PutMapping("/games/{id}")
     private ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
 
-        if (areValuesEmpty(computerGame)) {
+        if (areValuesEmpty(computerGame) || numericValidate(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             computerGamesList.update(computerGame, id);

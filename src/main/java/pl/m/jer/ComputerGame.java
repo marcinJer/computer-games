@@ -1,13 +1,28 @@
 package pl.m.jer;
 
+import javax.persistence.*;
+
+@Entity
 public class ComputerGame {
 
+    @Id
+    @GeneratedValue
     private static Integer counter = 1;
-    private String gameName;
-    private String gameType;
-    private Integer allowedAge;
-    private String manufacturer;
+
+    @Column(name= "id", unique = true)
     private Integer id;
+
+    @Column(name= "gameName")
+    private String gameName;
+
+    @Column(name= "gameType")
+    private String gameType;
+
+    @Column(name= "allowedAge")
+    private Integer allowedAge;
+
+    @Column(name= "manufacturer")
+    private String manufacturer;
 
     public ComputerGame(String gameName, String gameType, Integer allowedAge, String manufacturer, Integer id) {
         this.gameName = gameName;
@@ -19,7 +34,7 @@ public class ComputerGame {
     public ComputerGame() {
     }
 
-    public void assignNewId(){
+    public void assignNewId() {
         this.id = counter++;
     }
 

@@ -1,11 +1,13 @@
-package pl.m.jer;
+package pl.m.jer.repositories;
+
+import pl.m.jer.ComputerGame;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComputerGameRepository implements ComputerGameRepo {
+public class ListComputerGameRepository implements ComputerGameRepository {
 
-    List<ComputerGame> computerGames = new ArrayList<>();
+    private List<ComputerGame> computerGames = new ArrayList<>();
 
     @Override
     public void addGame(ComputerGame game) {
