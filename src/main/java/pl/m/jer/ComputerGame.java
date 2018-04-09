@@ -9,19 +9,14 @@ public class ComputerGame {
     @GeneratedValue
     private static Integer counter = 1;
 
-    @Column(name= "id", unique = true)
     private Integer id;
 
-    @Column(name= "gameName")
     private String gameName;
 
-    @Column(name= "gameType")
     private String gameType;
 
-    @Column(name= "allowedAge")
     private Integer allowedAge;
 
-    @Column(name= "manufacturer")
     private String manufacturer;
 
     public ComputerGame(String gameName, String gameType, Integer allowedAge, String manufacturer, Integer id) {
