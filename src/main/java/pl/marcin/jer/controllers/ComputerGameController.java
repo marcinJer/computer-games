@@ -42,7 +42,7 @@ public class ComputerGameController {
     /**
      * GET method returns data for one computer game
      *
-     * @param id
+     * @param id Computer game's id
      * @return  OK when selected computer game exists, BAD_REQUEST when computer game does not exist
      */
 
