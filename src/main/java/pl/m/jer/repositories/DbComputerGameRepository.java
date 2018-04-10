@@ -10,28 +10,26 @@ import java.util.List;
 
 @Primary
 @Component
-public class DbComputerGameRepository implements ComputerGameRepository {
+public class DbComputerGameRepository{
 
     @Autowired
     private SpringComputerGamesRepository springComputerGamesRepository;
 
-    @Override
+
     public void addGame(ComputerGame game) {
         springComputerGamesRepository.save(game);
     }
 
-    @Override
     public void deleteGame(int id) {
         springComputerGamesRepository.deleteById(id);
     }
 
-    @Override
     public void update(ComputerGame game, int id) {
         game.setId(id);
         springComputerGamesRepository.save(game);
     }
 
-    @Override
+
     public List<ComputerGame> getComputerGames() {
 
         Iterable<ComputerGame> computerGamesFromDB = springComputerGamesRepository.findAll();
@@ -44,7 +42,7 @@ public class DbComputerGameRepository implements ComputerGameRepository {
         return computerGames;
     }
 
-    @Override
+
     public ComputerGame findComputerGameById(int id) {
 
         return springComputerGamesRepository.findById(id)
