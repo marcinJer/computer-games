@@ -2,6 +2,11 @@ package pl.marcin.jer.data.data;
 
 public class ComputerGameValidator {
 
+    /**
+     * Method to validate if any field is empty
+     * @param computerGame  Computer game
+     * @return true when field is empty
+     */
     public static Boolean areValuesEmpty(ComputerGame computerGame) {
         return (computerGame.getGameName() == null || computerGame.getGameName().isEmpty()) ||
                 (computerGame.getGameType() == null) ||
@@ -9,10 +14,20 @@ public class ComputerGameValidator {
                 (computerGame.getManufacturer() == null || computerGame.getManufacturer().isEmpty());
     }
 
+    /**
+     * Method to validate if provided number in allowedAge field is lower or equals to 0
+     * @param computerGame Computer game
+     * @return
+     */
     public static Boolean numericValidate(ComputerGame computerGame) {
         return computerGame.getAllowedAge().equals(0) || computerGame.getAllowedAge() < 0;
     }
 
+    /**
+     * Method to validate if provided data contains special characters
+     * @param computerGame Computer game
+     * @return
+     */
     public static boolean specialCharacters(ComputerGame computerGame){
 
         String regex = "^[a-zA-Z]+$";
