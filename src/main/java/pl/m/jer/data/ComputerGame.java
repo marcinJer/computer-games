@@ -1,4 +1,4 @@
-package pl.m.jer;
+package pl.m.jer.data;
 
 import javax.persistence.*;
 
@@ -7,19 +7,17 @@ public class ComputerGame {
 
     @Id
     @GeneratedValue
-    private static Integer counter = 1;
-
     private Integer id;
 
     private String gameName;
 
-    private String gameType;
+    private TypesOfGames gameType;
 
     private Integer allowedAge;
 
     private String manufacturer;
 
-    public ComputerGame(String gameName, String gameType, Integer allowedAge, String manufacturer, Integer id) {
+    public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge, String manufacturer, Integer id) {
         this.gameName = gameName;
         this.gameType = gameType;
         this.allowedAge = allowedAge;
@@ -27,10 +25,6 @@ public class ComputerGame {
     }
 
     public ComputerGame() {
-    }
-
-    public void assignNewId() {
-        this.id = counter++;
     }
 
     public Integer getId() {
@@ -49,11 +43,11 @@ public class ComputerGame {
         this.gameName = gameName;
     }
 
-    public String getGameType() {
+    public TypesOfGames getGameType() {
         return gameType;
     }
 
-    public void setGameType(String gameType) {
+    public void setGameType(TypesOfGames gameType) {
         this.gameType = gameType;
     }
 

@@ -1,10 +1,12 @@
-package pl.m.jer;
+package pl.m.jer.controllers;
+
+import pl.m.jer.data.ComputerGame;
 
 public class ComputerGameValidator {
 
     public static Boolean areValuesEmpty(ComputerGame computerGame) {
         return (computerGame.getGameName() == null || computerGame.getGameName().isEmpty()) ||
-                (computerGame.getGameType() == null || computerGame.getGameType().isEmpty()) ||
+                (computerGame.getGameType() == null) ||
                 (computerGame.getAllowedAge() == null) ||
                 (computerGame.getManufacturer() == null || computerGame.getManufacturer().isEmpty());
     }

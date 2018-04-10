@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.m.jer.ComputerGame;
-import pl.m.jer.ComputerGameValidator;
+import pl.m.jer.data.ComputerGame;
 import pl.m.jer.repositories.ComputerGameRepository;
 
 import javax.transaction.Transactional;
@@ -22,7 +21,7 @@ public class ComputerGameController {
 
     @Transactional
     @GetMapping("/games")
-    public List<ComputerGame> getAllComputerGames(@RequestParam(value = "filter", required = false, defaultValue = "") String namePhrase) {
+    private List<ComputerGame> getAllComputerGames(@RequestParam(value = "filter", required = false, defaultValue = "") String namePhrase) {
 
 
         return StreamSupport.stream(computerGameRepository.findAll().spliterator(), false)
@@ -32,7 +31,7 @@ public class ComputerGameController {
     }
 
     @PostMapping("/games")
-    public ResponseEntity addComputerGame(@RequestBody ComputerGame computerGame) {
+    private ResponseEntity addComputerGame(@RequestBody ComputerGame computerGame) {
         if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
@@ -42,7 +41,7 @@ public class ComputerGameController {
     }
 
     @PutMapping("/games/{id}")
-    public ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
+    private ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
 
         if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -55,7 +54,7 @@ public class ComputerGameController {
     }
 
     @DeleteMapping("/games/{id}")
-    public void deleteComputerGame(@PathVariable int id) {
+    private void deleteComputerGame(@PathVariable int id) {
         computerGameRepository.deleteById(id);
     }
 
