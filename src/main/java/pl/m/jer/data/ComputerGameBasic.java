@@ -1,4 +1,5 @@
 package pl.m.jer.data;
+import pl.m.jer.data.data.*;
 
 public class ComputerGameBasic {
 

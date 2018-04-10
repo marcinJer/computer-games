@@ -1,6 +1,4 @@
-package pl.m.jer.controllers;
-
-import pl.m.jer.data.ComputerGame;
+package pl.m.jer.data.data;
 
 public class ComputerGameValidator {
 
