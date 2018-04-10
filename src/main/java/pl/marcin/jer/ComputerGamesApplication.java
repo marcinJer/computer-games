@@ -1,4 +1,4 @@
-package pl.m.jer;
+package pl.marcin.jer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

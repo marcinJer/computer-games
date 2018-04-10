@@ -1,7 +1,7 @@
-package pl.m.jer.repositories;
+package pl.marcin.jer.repositories;
 
 import org.springframework.data.repository.CrudRepository;
-import pl.m.jer.data.data.ComputerGame;
+import pl.marcin.jer.data.data.ComputerGame;
 
 public interface ComputerGameRepository extends CrudRepository<ComputerGame, Integer>{
 

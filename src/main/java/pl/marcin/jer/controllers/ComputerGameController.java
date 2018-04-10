@@ -1,13 +1,13 @@
-package pl.m.jer.controllers;
+package pl.marcin.jer.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.m.jer.data.data.ComputerGame;
-import pl.m.jer.data.ComputerGameBasic;
-import pl.m.jer.repositories.ComputerGameRepository;
-import pl.m.jer.data.data.ComputerGameValidator;
+import pl.marcin.jer.data.data.ComputerGame;
+import pl.marcin.jer.data.ComputerGameBasic;
+import pl.marcin.jer.repositories.ComputerGameRepository;
+import pl.marcin.jer.data.data.ComputerGameValidator;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +41,7 @@ public class ComputerGameController {
 
     @PostMapping("/games")
     public ResponseEntity addComputerGame(@RequestBody ComputerGame computerGame) {
-        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
+        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame) || ComputerGameValidator.specialCharacters(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             computerGameRepository.save(computerGame);
@@ -52,7 +52,7 @@ public class ComputerGameController {
     @PutMapping("/games/{id}")
     public ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
 
-        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
+        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame) || ComputerGameValidator.specialCharacters(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             computerGame.setId(id);

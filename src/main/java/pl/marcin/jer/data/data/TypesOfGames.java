@@ -1,4 +1,4 @@
-package pl.m.jer.data.data;
+package pl.marcin.jer.data.data;
 
 public enum TypesOfGames {
     RPG,

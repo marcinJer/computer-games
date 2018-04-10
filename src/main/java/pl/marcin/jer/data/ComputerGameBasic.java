@@ -1,5 +1,6 @@
-package pl.m.jer.data;
-import pl.m.jer.data.data.*;
+package pl.marcin.jer.data;
+import pl.marcin.jer.data.data.*;
+import pl.marcin.jer.data.data.ComputerGame;
 
 public class ComputerGameBasic {
 
