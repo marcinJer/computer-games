@@ -1,8 +1,8 @@
 package pl.marcin.jer.data;
-import pl.marcin.jer.data.data.*;
+
 import pl.marcin.jer.data.data.ComputerGame;
 
-public class ComputerGameBasic {
+public class ComputerGameBasic implements Comparable<ComputerGameBasic> {
 
   private Integer id;
   private String gameName;
@@ -26,6 +26,11 @@ public class ComputerGameBasic {
 
   public void setGameName(String gameName) {
       this.gameName = gameName;
+  }
+
+  @Override
+  public int compareTo(ComputerGameBasic game) {
+    return this.getGameName().compareTo(game.getGameName());
   }
 
 }

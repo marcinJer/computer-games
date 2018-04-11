@@ -23,14 +23,4 @@ public class ComputerGameValidator {
         return computerGame.getAllowedAge().equals(0) || computerGame.getAllowedAge() < 0;
     }
 
-    /**
-     * Method to validate if provided data contains special characters
-     * @param computerGame Computer game
-     * @return
-     */
-    public static boolean specialCharacters(ComputerGame computerGame){
-
-        String regex = "^[a-zA-Z]+$";
-        return computerGame.getGameName().matches(regex) || computerGame.getManufacturer().matches(regex);
-    }
 }
