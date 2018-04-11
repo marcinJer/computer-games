@@ -16,7 +16,7 @@ public class ComputerGamesApplicationTests {
 	 * Method to test if there is empty gameName field
 	 */
 	@Test
-	public void shouldBeInvalidWhenGameNameIsEmpty() {
+	public void shouldBeValidWhenGameNameIsEmpty() {
 		ComputerGame computerGame = new ComputerGame("", TypesOfGames.Action, 18, "CdProject RED", 1);
         ComputerGameValidator computerGameValidator = new ComputerGameValidator();
         boolean result = computerGameValidator.areValuesEmpty(computerGame);
@@ -27,7 +27,7 @@ public class ComputerGamesApplicationTests {
 	 * Method to test if there is empty gameType field
 	 */
 	@Test
-	public void shouldBeInvalidWhenGameTypeIsEmpty() {
+	public void shouldBeValidWhenGameTypeIsEmpty() {
 		ComputerGame computerGame = new ComputerGame("Gothic", null, 12, "Piranha Bytes", 1);
 		ComputerGameValidator computerGameValidator = new ComputerGameValidator();
 		boolean result = computerGameValidator.areValuesEmpty(computerGame);
@@ -38,7 +38,7 @@ public class ComputerGamesApplicationTests {
 	 * Method to test if there is empty allowedAge field
 	 */
 	@Test
-	public void shouldBeInvalidWhenAllowedAgeIsEmpty() {
+	public void shouldBeValidWhenAllowedAgeIsEmpty() {
 		ComputerGame computerGame = new ComputerGame("Mafia", TypesOfGames.Action, null, "Illusion Softworks", 1);
 		ComputerGameValidator computerGameValidator = new ComputerGameValidator();
 		boolean result = computerGameValidator.areValuesEmpty(computerGame);
@@ -49,7 +49,7 @@ public class ComputerGamesApplicationTests {
 	 * Method to test if there is empty manufacturer field
 	 */
 	@Test
-	public void shouldBeInvalidWhenManufacturerIsEmpty() {
+	public void shouldBeValidWhenManufacturerIsEmpty() {
 		ComputerGame computerGame = new ComputerGame("Far Cry", TypesOfGames.FPS, 12, "", 1);
 		ComputerGameValidator computerGameValidator = new ComputerGameValidator();
 		boolean result = computerGameValidator.areValuesEmpty(computerGame);
@@ -61,7 +61,7 @@ public class ComputerGamesApplicationTests {
 	 */
 
 	@Test
-	public void shouldBeInvalidWhenAllowedAgeLessThanZero() {
+	public void shouldBeValidWhenAllowedAgeLessThanZero() {
 		ComputerGame computerGame = new ComputerGame("Fifa 18", TypesOfGames.Arcade, -12, "EA Sports", 1);
 		ComputerGameValidator computerGameValidator = new ComputerGameValidator();
 		boolean result = computerGameValidator.numericValidate(computerGame);
