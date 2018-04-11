@@ -1,15 +1,33 @@
-package pl.m.jer;
+package pl.marcin.jer.data.data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class ComputerGame {
 
-    private static Integer counter = 1;
+    /**
+     * Computer game's fields
+     */
+    @Id
+    @GeneratedValue
+    private Integer id;
     private String gameName;
-    private String gameType;
+    private TypesOfGames gameType;
     private Integer allowedAge;
     private String manufacturer;
-    private Integer id;
 
-    public ComputerGame(String gameName, String gameType, Integer allowedAge, String manufacturer, Integer id) {
+    /**
+     * Computer game's constructor
+     *
+     * @param gameName     Computer game's name
+     * @param gameType     Computer game's type
+     * @param allowedAge   Computer game's allowed age
+     * @param manufacturer Computer game's manufacturer
+     * @param id           Computer game's id
+     */
+    public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge, String manufacturer, Integer id) {
         this.gameName = gameName;
         this.gameType = gameType;
         this.allowedAge = allowedAge;
@@ -17,10 +35,6 @@ public class ComputerGame {
     }
 
     public ComputerGame() {
-    }
-
-    public void assignNewId(){
-        this.id = counter++;
     }
 
     public Integer getId() {
@@ -39,11 +53,11 @@ public class ComputerGame {
         this.gameName = gameName;
     }
 
-    public String getGameType() {
+    public TypesOfGames getGameType() {
         return gameType;
     }
 
-    public void setGameType(String gameType) {
+    public void setGameType(TypesOfGames gameType) {
         this.gameType = gameType;
     }
 
