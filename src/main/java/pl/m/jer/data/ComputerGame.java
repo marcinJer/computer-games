@@ -1,15 +1,23 @@
-package pl.m.jer;
+package pl.m.jer.data;
 
+import javax.persistence.*;
+
+@Entity
 public class ComputerGame {
 
-    private static Integer counter = 1;
-    private String gameName;
-    private String gameType;
-    private Integer allowedAge;
-    private String manufacturer;
+    @Id
+    @GeneratedValue
     private Integer id;
 
-    public ComputerGame(String gameName, String gameType, Integer allowedAge, String manufacturer, Integer id) {
+    private String gameName;
+
+    private TypesOfGames gameType;
+
+    private Integer allowedAge;
+
+    private String manufacturer;
+
+    public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge, String manufacturer, Integer id) {
         this.gameName = gameName;
         this.gameType = gameType;
         this.allowedAge = allowedAge;
@@ -17,10 +25,6 @@ public class ComputerGame {
     }
 
     public ComputerGame() {
-    }
-
-    public void assignNewId(){
-        this.id = counter++;
     }
 
     public Integer getId() {
@@ -39,11 +43,11 @@ public class ComputerGame {
         this.gameName = gameName;
     }
 
-    public String getGameType() {
+    public TypesOfGames getGameType() {
         return gameType;
     }
 
-    public void setGameType(String gameType) {
+    public void setGameType(TypesOfGames gameType) {
         this.gameType = gameType;
     }
 
