@@ -4,7 +4,8 @@ public class ComputerGameValidator {
 
     /**
      * Method to validate if any field is empty
-     * @param computerGame  Computer game
+     *
+     * @param computerGame Computer game
      * @return true when field is empty
      */
     public static Boolean areValuesEmpty(ComputerGame computerGame) {
@@ -16,6 +17,7 @@ public class ComputerGameValidator {
 
     /**
      * Method to validate if provided number in allowedAge field is lower or equals to 0
+     *
      * @param computerGame Computer game
      * @return
      */
@@ -23,14 +25,4 @@ public class ComputerGameValidator {
         return computerGame.getAllowedAge().equals(0) || computerGame.getAllowedAge() < 0;
     }
 
-    /**
-     * Method to validate if provided data contains special characters
-     * @param computerGame Computer game
-     * @return
-     */
-    public static boolean specialCharacters(ComputerGame computerGame){
-
-        String regex = "^[a-zA-Z]+$";
-        return computerGame.getGameName().matches(regex) || computerGame.getManufacturer().matches(regex);
-    }
 }
