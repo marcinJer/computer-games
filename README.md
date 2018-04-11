@@ -41,7 +41,7 @@ Body JSON:
 {
   "gameName": "Tekken",
   "gameType": "Action",
-  "allowedAge": 15,
+  "allowedAge": 18,
   "manufacturer": "CDP"
 }
 ```
