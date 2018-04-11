@@ -21,11 +21,11 @@ public class ComputerGame {
     /**
      * Computer game's constructor
      *
-     * @param gameName          Computer game's name
-     * @param gameType          Computer game's type
-     * @param allowedAge        Computer game's allowed age
-     * @param manufacturer      Computer game's manufacturer
-     * @param id                Computer game's id
+     * @param gameName     Computer game's name
+     * @param gameType     Computer game's type
+     * @param allowedAge   Computer game's allowed age
+     * @param manufacturer Computer game's manufacturer
+     * @param id           Computer game's id
      */
     public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge, String manufacturer, Integer id) {
         this.gameName = gameName;

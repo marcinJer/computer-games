@@ -1,6 +1,7 @@
 package pl.marcin.jer.controllers;
 
 import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +33,14 @@ public class ComputerGameController {
      * @return
      */
     @GetMapping("/games")
-    public List<ComputerGameBasic> getAllComputerGamesBasicInfo(@RequestParam(value = "name", required = false, defaultValue = "") String namePrefix, @RequestParam(value = "sort", required = false, defaultValue = "false") boolean shouldSort) {
+    public List<ComputerGameBasic> getAllComputerGamesBasicInfo(@RequestParam(value = "name", required = false, defaultValue = "") String namePrefix,
+                                                                @RequestParam(value = "sort", required = false, defaultValue = "false") boolean shouldSort) {
         List<ComputerGameBasic> games = StreamSupport.stream(computerGameRepository.findAll().spliterator(), false)
-            .filter(computerGame -> computerGame.getGameName().startsWith(namePrefix))
-            .map(computerGame -> new ComputerGameBasic(computerGame))
-            .collect(Collectors.toList());
+                .filter(computerGame -> computerGame.getGameName().startsWith(namePrefix))
+                .map(computerGame -> new ComputerGameBasic(computerGame))
+                .collect(Collectors.toList());
         if (shouldSort) {
-          Collections.sort(games);
+            Collections.sort(games);
         }
         return games;
     }
@@ -47,7 +49,7 @@ public class ComputerGameController {
      * GET method returns data for one computer game
      *
      * @param id Computer game's id
-     * @return  OK when selected computer game exists, BAD_REQUEST when computer game does not exist
+     * @return OK when selected computer game exists, BAD_REQUEST when computer game does not exist
      */
 
     @GetMapping("/games/{id}")
@@ -80,13 +82,13 @@ public class ComputerGameController {
      * PUT method to edit computer game
      *
      * @param computerGame computer game to edit
-     * @param id        computer game's id
+     * @param id           computer game's id
      * @return OK when computer game was edited , BAD_REQUEST when computer game hasn't been edited
      */
     @PutMapping("/games/{id}")
     public ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
 
-        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
+        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame) || !computerGameRepository.existsById(id)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             computerGame.setId(id);
