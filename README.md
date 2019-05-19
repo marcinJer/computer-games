@@ -14,7 +14,7 @@ Run:
 Usage via REST API:
 
 Add new game
-`PUT http://localhost:8080/games`
+`POST http://localhost:8080/games`
 Body JSON:
 ```
 {
