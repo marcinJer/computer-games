@@ -35,4 +35,7 @@ public class ComputerGameService {
         computerGameRepository.deleteById(id);
     }
 
+    public Boolean findIfExists(int id){
+        return computerGameRepository.existsById(id);
+    }
 }

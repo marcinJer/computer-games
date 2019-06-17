@@ -24,7 +24,7 @@ public class ComputerGameController {
 
     @Autowired
     private ComputerGameService computerGameService;
-    
+
 
     /**
      * GET method returns all computer games showing only id and game name
@@ -54,11 +54,11 @@ public class ComputerGameController {
 
     @GetMapping("/games/{id}")
     public ResponseEntity getComputerGameByIdWithDetails(@PathVariable int id) {
-        ComputerGame computerGame = computerGameService.findComputerGameById(id);
-        if (computerGame != null) {
+        if (computerGameService.findIfExists(id)) {
+            ComputerGame computerGame = computerGameService.findComputerGameById(id);
             return new ResponseEntity(computerGame, HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("Computer game with id = " + id + " does not exist", HttpStatus.BAD_REQUEST);
         }
     }
 
