@@ -6,13 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.marcin.jer.data.data.ComputerGame;
-import pl.marcin.jer.data.ComputerGameBasic;
-import pl.marcin.jer.repositories.ComputerGameRepository;
-import pl.marcin.jer.data.data.ComputerGameValidator;
+import pl.marcin.jer.entities.ComputerGame;
+import pl.marcin.jer.entities.ComputerGameBasic;
+import pl.marcin.jer.services.ComputerGameService;
+import pl.marcin.jer.validators.ComputerGameValidator;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -24,7 +23,7 @@ import java.util.stream.StreamSupport;
 public class ComputerGameController {
 
     @Autowired
-    private ComputerGameRepository computerGameRepository;
+    private ComputerGameService computerGameService;
     
 
     /**
@@ -36,7 +35,7 @@ public class ComputerGameController {
     @GetMapping("/games")
     public List<ComputerGameBasic> getAllComputerGamesBasicInfo(@RequestParam(value = "name", required = false, defaultValue = "") String namePrefix,
                                                                 @RequestParam(value = "sort", required = false, defaultValue = "false") boolean shouldSort) {
-        List<ComputerGameBasic> games = StreamSupport.stream(computerGameRepository.findAll().spliterator(), false)
+        List<ComputerGameBasic> games = StreamSupport.stream(computerGameService.getAllComputerGames().spliterator(), false)
                 .filter(computerGame -> computerGame.getGameName().startsWith(namePrefix))
                 .map(computerGame -> new ComputerGameBasic(computerGame))
                 .collect(Collectors.toList());
@@ -47,7 +46,7 @@ public class ComputerGameController {
     }
 
     /**
-     * GET method returns data for one computer game
+     * GET method returns entities for one computer game
      *
      * @param id Computer game's id
      * @return OK when selected computer game exists, BAD_REQUEST when computer game does not exist
@@ -55,9 +54,9 @@ public class ComputerGameController {
 
     @GetMapping("/games/{id}")
     public ResponseEntity getComputerGameByIdWithDetails(@PathVariable int id) {
-        Optional<ComputerGame> computerGameOptional = computerGameRepository.findById(id);
-        if (computerGameOptional.isPresent()) {
-            return new ResponseEntity(computerGameOptional.get(), HttpStatus.OK);
+        ComputerGame computerGame = computerGameService.findComputerGameById(id);
+        if (computerGame != null) {
+            return new ResponseEntity(computerGame, HttpStatus.OK);
         } else {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -74,7 +73,7 @@ public class ComputerGameController {
         if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
-            computerGameRepository.save(computerGame);
+            computerGameService.saveComputerGame(computerGame);
             return new ResponseEntity((HttpStatus.OK));
         }
     }
@@ -89,11 +88,11 @@ public class ComputerGameController {
     @PutMapping("/games/{id}")
     public ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
 
-        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame) || !computerGameRepository.existsById(id)) {
+        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame) || (computerGameService.findComputerGameById(id) == null)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             computerGame.setId(id);
-            computerGameRepository.save(computerGame);
+            computerGameService.saveComputerGame(computerGame);
 
             return new ResponseEntity((HttpStatus.OK));
         }
@@ -106,7 +105,7 @@ public class ComputerGameController {
      */
     @DeleteMapping("/games/{id}")
     public void deleteComputerGame(@PathVariable int id) {
-        computerGameRepository.deleteById(id);
+        computerGameService.deleteComputerGameById(id);
     }
 
 }

@@ -1,4 +1,6 @@
-package pl.marcin.jer.data.data;
+package pl.marcin.jer.entities;
+
+import pl.marcin.jer.enums.TypesOfGames;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

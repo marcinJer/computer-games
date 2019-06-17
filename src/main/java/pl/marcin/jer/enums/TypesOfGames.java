@@ -1,4 +1,4 @@
-package pl.marcin.jer.data.data;
+package pl.marcin.jer.enums;
 
 /**
  * Enum class for types of games

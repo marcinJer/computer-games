@@ -1,6 +1,4 @@
-package pl.marcin.jer.data;
-
-import pl.marcin.jer.data.data.ComputerGame;
+package pl.marcin.jer.entities;
 
 public class ComputerGameBasic implements Comparable<ComputerGameBasic> {
 
