@@ -12,7 +12,7 @@ Run:
 `java -jar target/ComputerGames-0.0.1-SNAPSHOT.jar`
 
 Basic auth:
-username: `user`
+username: `user`,
 password: `user`
 
 Usage via REST API:
