@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import pl.marcin.jer.entities.ComputerGame;
-import pl.marcin.jer.validators.ComputerGameValidator;
 import pl.marcin.jer.enums.TypesOfGames;
+import pl.marcin.jer.validators.ComputerGameValidator;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 

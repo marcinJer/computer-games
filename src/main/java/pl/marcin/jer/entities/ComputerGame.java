@@ -1,10 +1,11 @@
 package pl.marcin.jer.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import pl.marcin.jer.enums.TypesOfGames;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class ComputerGame {
@@ -19,6 +20,9 @@ public class ComputerGame {
     private TypesOfGames gameType;
     private Integer allowedAge;
     private String manufacturer;
+
+    @OneToMany(mappedBy = "computerGame", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 
     /**
      * Computer game's constructor
@@ -37,6 +41,15 @@ public class ComputerGame {
     }
 
     public ComputerGame() {
+    }
+
+    @JsonIgnore
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public Integer getId() {

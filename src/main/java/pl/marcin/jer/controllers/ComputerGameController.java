@@ -1,16 +1,17 @@
 package pl.marcin.jer.controllers;
 
-import java.util.Collections;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.marcin.jer.entities.ComputerGame;
 import pl.marcin.jer.entities.ComputerGameBasic;
+import pl.marcin.jer.entities.Review;
+import pl.marcin.jer.repositories.ReviewRepository;
 import pl.marcin.jer.services.ComputerGameService;
 import pl.marcin.jer.validators.ComputerGameValidator;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -24,6 +25,8 @@ public class ComputerGameController {
 
     @Autowired
     private ComputerGameService computerGameService;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
 
     /**
@@ -104,8 +107,18 @@ public class ComputerGameController {
      * @param id computer game id
      */
     @DeleteMapping("/games/{id}")
-    public void deleteComputerGame(@PathVariable int id) {
-        computerGameService.deleteComputerGameById(id);
+    public ResponseEntity deleteComputerGame(@PathVariable int id) {
+        if (computerGameService.findIfExists(id)) {
+            computerGameService.deleteComputerGameById(id);
+            return new ResponseEntity(HttpStatus.OK);
+        }else return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/games/{computerGameId}/reviews")
+    public ResponseEntity addReviewToComputerGame(@RequestBody Review review, @PathVariable int computerGameId) {
+        if (computerGameService.findIfExists(computerGameId)) {
+            computerGameService.addReviewToComputerGame(review, computerGameId);
+            return new ResponseEntity(HttpStatus.OK);
+        } else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
 }

@@ -3,11 +3,11 @@ package pl.marcin.jer.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.marcin.jer.entities.ComputerGame;
+import pl.marcin.jer.entities.Review;
 import pl.marcin.jer.exceptions.NotFoundException;
 import pl.marcin.jer.repositories.ComputerGameRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -37,5 +37,15 @@ public class ComputerGameService {
 
     public Boolean findIfExists(int id){
         return computerGameRepository.existsById(id);
+    }
+
+    public Review addReviewToComputerGame(Review review, int computerGameId){
+        ComputerGame computerGame = computerGameRepository.findById(computerGameId)
+                .orElseThrow(() -> new NotFoundException("Computer game with id = " + computerGameId + " does not exist"));
+        review.setComputerGame(computerGame);
+        computerGame.getReviews().add(review);
+        computerGame.setId(computerGameId);
+        computerGameRepository.save(computerGame);
+        return review;
     }
 }
