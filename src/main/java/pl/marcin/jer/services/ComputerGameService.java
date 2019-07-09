@@ -32,7 +32,9 @@ public class ComputerGameService {
     }
 
     public void deleteComputerGameById(int id){
-        computerGameRepository.deleteById(id);
+        ComputerGame computerGame = computerGameRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Computer game with id = " + id + " does not exist"));
+        computerGameRepository.delete(computerGame);
     }
 
     public Boolean findIfExists(int id){

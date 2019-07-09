@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.marcin.jer.entities.ComputerGame;
 import pl.marcin.jer.entities.ComputerGameBasic;
 import pl.marcin.jer.entities.Review;
+import pl.marcin.jer.facades.ComputerGameReviewFacade;
 import pl.marcin.jer.repositories.ReviewRepository;
 import pl.marcin.jer.services.ComputerGameService;
 import pl.marcin.jer.validators.ComputerGameValidator;
@@ -21,12 +22,13 @@ import java.util.stream.StreamSupport;
  */
 
 @RestController
+@RequestMapping("/games")
 public class ComputerGameController {
 
     @Autowired
     private ComputerGameService computerGameService;
     @Autowired
-    private ReviewRepository reviewRepository;
+    private ComputerGameReviewFacade computerGameReviewFacade;
 
 
     /**
@@ -35,7 +37,7 @@ public class ComputerGameController {
      * @param namePrefix
      * @return
      */
-    @GetMapping("/games")
+    @GetMapping
     public List<ComputerGameBasic> getAllComputerGamesBasicInfo(@RequestParam(value = "name", required = false, defaultValue = "") String namePrefix,
                                                                 @RequestParam(value = "sort", required = false, defaultValue = "false") boolean shouldSort) {
         List<ComputerGameBasic> games = StreamSupport.stream(computerGameService.getAllComputerGames().spliterator(), false)
@@ -55,14 +57,10 @@ public class ComputerGameController {
      * @return OK when selected computer game exists, BAD_REQUEST when computer game does not exist
      */
 
-    @GetMapping("/games/{id}")
-    public ResponseEntity getComputerGameByIdWithDetails(@PathVariable int id) {
-        if (computerGameService.findIfExists(id)) {
+    @GetMapping("/{id}")
+    public ComputerGame getComputerGameByIdWithDetails(@PathVariable int id) {
             ComputerGame computerGame = computerGameService.findComputerGameById(id);
-            return new ResponseEntity(computerGame, HttpStatus.OK);
-        } else {
-            return new ResponseEntity("Computer game with id = " + id + " does not exist", HttpStatus.BAD_REQUEST);
-        }
+            return computerGame;
     }
 
     /**
@@ -71,7 +69,7 @@ public class ComputerGameController {
      * @param computerGame computer game to add
      * @return OK if computer game was added, BAD_REQUEST if provided computer game was invalid
      */
-    @PostMapping("/games")
+    @PostMapping
     public ResponseEntity addComputerGame(@RequestBody ComputerGame computerGame) {
         if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -88,7 +86,7 @@ public class ComputerGameController {
      * @param id           computer game's id
      * @return OK when computer game was edited , BAD_REQUEST when computer game hasn't been edited
      */
-    @PutMapping("/games/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
 
         if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame) || (computerGameService.findComputerGameById(id) == null)) {
@@ -106,19 +104,18 @@ public class ComputerGameController {
      *
      * @param id computer game id
      */
-    @DeleteMapping("/games/{id}")
-    public ResponseEntity deleteComputerGame(@PathVariable int id) {
-        if (computerGameService.findIfExists(id)) {
+    @DeleteMapping("/{id}")
+    public void deleteComputerGame(@PathVariable int id) {
             computerGameService.deleteComputerGameById(id);
-            return new ResponseEntity(HttpStatus.OK);
-        }else return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/games/{computerGameId}/reviews")
-    public ResponseEntity addReviewToComputerGame(@RequestBody Review review, @PathVariable int computerGameId) {
-        if (computerGameService.findIfExists(computerGameId)) {
-            computerGameService.addReviewToComputerGame(review, computerGameId);
-            return new ResponseEntity(HttpStatus.OK);
-        } else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    @PostMapping("/{computerGameId}/reviews")
+    public Review addReviewToComputerGame(@RequestBody Review review, @PathVariable int computerGameId) {
+            return computerGameService.addReviewToComputerGame(review, computerGameId);
+    }
+
+    @DeleteMapping("/{computerGameId}/reviews/{reviewId}")
+    public void deleteComputerGamesReview(@PathVariable int computerGameId, @PathVariable int reviewId){
+        computerGameReviewFacade.deleteComputerGamesReview(computerGameId, reviewId);
     }
 }

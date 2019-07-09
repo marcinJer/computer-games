@@ -1,6 +1,8 @@
 package pl.marcin.jer.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import pl.marcin.jer.enums.TypesOfGames;
 
 import javax.persistence.*;
@@ -21,7 +23,7 @@ public class ComputerGame {
     private Integer allowedAge;
     private String manufacturer;
 
-    @OneToMany(mappedBy = "computerGame", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "computerGame", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     /**
