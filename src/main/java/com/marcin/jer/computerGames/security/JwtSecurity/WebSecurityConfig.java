@@ -1,0 +1,91 @@
+package com.marcin.jer.computerGames.security.JwtSecurity;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private final UserDetailsServiceImpl userDetailsService;
+  private final JwtAuthEntryPoint unauthorizedHandler;
+
+  public WebSecurityConfig(
+      UserDetailsServiceImpl userDetailsService, JwtAuthEntryPoint unauthorizedHandler) {
+    this.userDetailsService = userDetailsService;
+    this.unauthorizedHandler = unauthorizedHandler;
+  }
+
+  @Bean
+  public JwtAuthTokenFilter authenticationJwtTokenFilter() {
+    return new JwtAuthTokenFilter();
+  }
+
+  @Override
+  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
+      throws Exception {
+    authenticationManagerBuilder
+        .userDetailsService(userDetailsService)
+        .passwordEncoder(passwordEncoder());
+  }
+
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.cors().and().csrf().disable().
+            authorizeRequests()
+            .antMatchers("/users/signin").permitAll()
+            .antMatchers("/users/signup").permitAll()
+            .antMatchers(HttpMethod.PUT,"/users/edit").hasAnyRole("ADMIN", "USER", "MANUFACTURER")
+            .antMatchers(HttpMethod.DELETE,"/users/**").hasRole("ADMIN")
+            .antMatchers(HttpMethod.GET,"/users/computerGames").hasAnyRole("ADMIN", "USER", "MANUFACTURER")
+            .antMatchers(HttpMethod.PUT,"/users/computerGames/**").hasAnyRole("ADMIN", "USER")
+            .antMatchers(HttpMethod.GET,"/users/**").hasRole("ADMIN")
+            .antMatchers(HttpMethod.POST, "/games").hasAnyRole("ADMIN", "MANUFACTURER")
+            .antMatchers(HttpMethod.POST, "/games/**").hasAnyRole("ADMIN", "USER", "MANUFACTURER")
+            .antMatchers(HttpMethod.GET, "/games/**").hasAnyRole("ADMIN", "USER", "MANUFACTURER")
+            .antMatchers(HttpMethod.DELETE, "/games/**").hasAnyRole("ADMIN", "MANUFACTURER")
+            .antMatchers(HttpMethod.PUT, "/games/**").hasAnyRole("ADMIN", "MANUFACTURER")
+            .anyRequest().authenticated()
+            .and()
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+            .and()
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+
+    http.addFilterBefore(
+        authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+  }
+
+  @Bean
+  public SessionRegistry sessionRegistry() {
+    return new SessionRegistryImpl();
+  }
+}
