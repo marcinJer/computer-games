@@ -1,7 +1,7 @@
-package pl.marcin.jer.entities;
+package com.marcin.jer.computerGames.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import pl.marcin.jer.enums.TypesOfGames;
+import com.marcin.jer.computerGames.enums.TypesOfGames;
 
 import javax.persistence.*;
 import java.util.ArrayList;

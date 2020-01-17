@@ -3,9 +3,9 @@ package com.example.ComputerGames;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import pl.marcin.jer.entities.ComputerGame;
-import pl.marcin.jer.enums.TypesOfGames;
-import pl.marcin.jer.validators.ComputerGameValidator;
+import com.marcin.jer.computerGames.entities.ComputerGame;
+import com.marcin.jer.computerGames.enums.TypesOfGames;
+import com.marcin.jer.computerGames.validators.ComputerGameValidator;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 

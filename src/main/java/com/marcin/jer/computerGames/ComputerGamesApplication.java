@@ -1,4 +1,4 @@
-package pl.marcin.jer;
+package com.marcin.jer.computerGames;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

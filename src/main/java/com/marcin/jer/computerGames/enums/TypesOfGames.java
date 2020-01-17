@@ -1,4 +1,4 @@
-package pl.marcin.jer.enums;
+package com.marcin.jer.computerGames.enums;
 
 /**
  * Enum class for types of games

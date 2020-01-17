@@ -1,15 +1,15 @@
-package pl.marcin.jer.controllers;
+package com.marcin.jer.computerGames.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.marcin.jer.entities.ComputerGame;
-import pl.marcin.jer.entities.ComputerGameBasic;
-import pl.marcin.jer.entities.Review;
-import pl.marcin.jer.repositories.ReviewRepository;
-import pl.marcin.jer.services.ComputerGameService;
-import pl.marcin.jer.validators.ComputerGameValidator;
+import com.marcin.jer.computerGames.entities.ComputerGame;
+import com.marcin.jer.computerGames.entities.ComputerGameBasic;
+import com.marcin.jer.computerGames.entities.Review;
+import com.marcin.jer.computerGames.repositories.ReviewRepository;
+import com.marcin.jer.computerGames.services.ComputerGameService;
+import com.marcin.jer.computerGames.validators.ComputerGameValidator;
 
 import java.util.Collections;
 import java.util.List;

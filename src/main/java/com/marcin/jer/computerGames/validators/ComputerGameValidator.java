@@ -1,6 +1,6 @@
-package pl.marcin.jer.validators;
+package com.marcin.jer.computerGames.validators;
 
-import pl.marcin.jer.entities.ComputerGame;
+import com.marcin.jer.computerGames.entities.ComputerGame;
 
 public class ComputerGameValidator {
 

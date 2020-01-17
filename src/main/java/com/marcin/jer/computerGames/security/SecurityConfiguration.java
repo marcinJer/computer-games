@@ -1,4 +1,4 @@
-package pl.marcin.jer.security;
+package com.marcin.jer.computerGames.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

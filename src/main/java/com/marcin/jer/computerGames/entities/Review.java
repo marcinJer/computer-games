@@ -1,4 +1,4 @@
-package pl.marcin.jer.entities;
+package com.marcin.jer.computerGames.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

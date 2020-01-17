@@ -1,4 +1,4 @@
-package pl.marcin.jer.exceptions;
+package com.marcin.jer.computerGames.exceptions;
 
 public class NotFoundException extends RuntimeException {
 

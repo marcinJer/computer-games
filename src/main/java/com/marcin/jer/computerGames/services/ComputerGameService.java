@@ -1,11 +1,11 @@
-package pl.marcin.jer.services;
+package com.marcin.jer.computerGames.services;
 
+import com.marcin.jer.computerGames.repositories.ComputerGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.marcin.jer.entities.ComputerGame;
-import pl.marcin.jer.entities.Review;
-import pl.marcin.jer.exceptions.NotFoundException;
-import pl.marcin.jer.repositories.ComputerGameRepository;
+import com.marcin.jer.computerGames.entities.ComputerGame;
+import com.marcin.jer.computerGames.entities.Review;
+import com.marcin.jer.computerGames.exceptions.NotFoundException;
 
 import java.util.List;
 
