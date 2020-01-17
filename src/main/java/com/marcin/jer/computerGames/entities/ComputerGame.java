@@ -4,43 +4,56 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marcin.jer.computerGames.enums.TypesOfGames;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name = "computer_game")
 public class ComputerGame {
 
     /**
      * Computer game's fields
      */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull
     private String gameName;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
     private TypesOfGames gameType;
+
+    @NotNull
     private Integer allowedAge;
-    private String manufacturer;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "game_users",
+            joinColumns = {@JoinColumn(name = "computer_game_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
+    private Set<User> users;
 
     @OneToMany(mappedBy = "computerGame", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
+    public ComputerGame() {
+    }
+
     /**
      * Computer game's constructor
      *
-     * @param gameName     Computer game's name
-     * @param gameType     Computer game's type
-     * @param allowedAge   Computer game's allowed age
-     * @param manufacturer Computer game's manufacturer
-     * @param id           Computer game's id
+     * @param gameName   Computer game's name
+     * @param gameType   Computer game's type
+     * @param allowedAge Computer game's allowed age
      */
-    public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge, String manufacturer, Integer id) {
+    public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge) {
         this.gameName = gameName;
         this.gameType = gameType;
         this.allowedAge = allowedAge;
-        this.manufacturer = manufacturer;
-    }
-
-    public ComputerGame() {
     }
 
     @JsonIgnore
@@ -50,6 +63,11 @@ public class ComputerGame {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    @JsonIgnore
+    public Set<User> getUsers() {
+        return users;
     }
 
     public Integer getId() {
@@ -82,13 +100,5 @@ public class ComputerGame {
 
     public void setAllowedAge(Integer allowedAge) {
         this.allowedAge = allowedAge;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
     }
 }

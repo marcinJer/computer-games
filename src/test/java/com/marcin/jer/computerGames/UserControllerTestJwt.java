@@ -233,7 +233,7 @@ public class UserControllerTestJwt {
     ResponseEntity<String> result =
         testRestTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(headers), String.class);
 
-        assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertEquals(HttpStatus.OK, result.getStatusCode());
   }
 
   @Test

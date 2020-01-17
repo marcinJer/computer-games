@@ -22,13 +22,8 @@ public class ComputerGameBasic implements Comparable<ComputerGameBasic> {
         return gameName;
     }
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
-    }
-
     @Override
     public int compareTo(ComputerGameBasic game) {
         return this.getGameName().compareTo(game.getGameName());
     }
-
 }

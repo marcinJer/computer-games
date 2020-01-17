@@ -50,7 +50,7 @@ public class UserController {
 
   @GetMapping("/users/computerGames")
   public List<ComputerGame> findAllLoggedUsersComputerGames() {
-    return userComputerGameFacade.findAllUsersComputerGames();
+    return userComputerGameFacade.getAllUsersComputerGames();
   }
 
   @PutMapping("/users/computerGames/{id}")

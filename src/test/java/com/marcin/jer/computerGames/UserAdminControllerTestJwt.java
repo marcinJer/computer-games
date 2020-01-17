@@ -153,8 +153,8 @@ public class UserAdminControllerTestJwt {
 
     assertEquals(HttpStatus.CREATED, result.getStatusCode());
 
-    Optional<ComputerGame> cg = computerGameService.findComputerGameByName("Goat Simulator");
-    cg.ifPresent(game -> computerGameService.deleteById(game.getId()));
+    ComputerGame cg = computerGameService.getComputerGameByName("Goat Simulator");
+    computerGameService.deleteById(cg.getId());
   }
 
   @Test

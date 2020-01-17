@@ -6,6 +6,7 @@ import com.marcin.jer.computerGames.entities.User;
 import com.marcin.jer.computerGames.enums.RoleName;
 import com.marcin.jer.computerGames.enums.TypesOfGames;
 import com.marcin.jer.computerGames.exceptions.NotFoundException;
+import com.marcin.jer.computerGames.repositories.ComputerGameRepository;
 import com.marcin.jer.computerGames.repositories.RoleRepository;
 import com.marcin.jer.computerGames.services.ComputerGameService;
 import com.marcin.jer.computerGames.services.UserService;
@@ -26,15 +27,15 @@ public class DatabaseLoader implements ApplicationListener<ContextRefreshedEvent
 
   private final UserService userService;
   private final RoleRepository roleRepository;
-  private final ComputerGameService computerGameService;
+  private final ComputerGameRepository computerGameRepository;
 
   public DatabaseLoader(
       UserService userService,
       RoleRepository roleRepository,
-      ComputerGameService computerGameService) {
+      ComputerGameRepository computerGameRepository) {
     this.userService = userService;
     this.roleRepository = roleRepository;
-    this.computerGameService = computerGameService;
+    this.computerGameRepository = computerGameRepository;
   }
 
   @Override
@@ -119,7 +120,7 @@ public class DatabaseLoader implements ApplicationListener<ContextRefreshedEvent
   void createComputerGameIfNotFound(String gameName, Integer allowedAge, TypesOfGames typeOfGame) {
 
     Optional<ComputerGame> computerGameToBeFound =
-        computerGameService.findComputerGameByName(gameName);
+            computerGameRepository.findByGameName(gameName);
 
     if (!computerGameToBeFound.isPresent()) {
       ComputerGame computerGame = new ComputerGame();
@@ -127,7 +128,7 @@ public class DatabaseLoader implements ApplicationListener<ContextRefreshedEvent
       computerGame.setAllowedAge(allowedAge);
       computerGame.setGameType(typeOfGame);
 
-      computerGameService.save(computerGame);
+      computerGameRepository.save(computerGame);
     }
   }
 }

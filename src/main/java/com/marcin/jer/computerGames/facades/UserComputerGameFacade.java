@@ -32,27 +32,27 @@ public class UserComputerGameFacade {
   }
 
   public void removeComputerGameFromUsersCollection(int id) {
-    ComputerGame computerGame = computerGameService.findComputerGameById(id);
+    ComputerGame computerGame = computerGameService.getComputerGameById(id);
     User user = userContext.getCurrentUser();
     computerGame.getUsers().removeIf(user1 -> user1.getId().equals(user.getId()));
     computerGameService.save(computerGame);
   }
 
   public ComputerGame addComputerGameToUsersCollection(int id) {
-      ComputerGame computerGame = computerGameService.findComputerGameById(id);
+      ComputerGame computerGame = computerGameService.getComputerGameById(id);
       User user = userContext.getCurrentUser();
       computerGame.getUsers().add(user);
       return computerGameService.save(computerGame);
   }
 
-  public List<ComputerGame> findAllUsersComputerGames() {
-    return computerGameService.findAllLoggedUsersComputerGames();
+  public List<ComputerGame> getAllUsersComputerGames() {
+    return computerGameService.getAllLoggedUsersComputerGames();
   }
 
   public void deleteUserById(int id) {
     if (userService.checkRole(userContext, RoleName.ROLE_ADMIN) || userContext.getCurrentUser().getId() == id) {
       User user = userService.findUserById(id);
-      List<ComputerGame> computerGames = findAllUsersComputerGames();
+      List<ComputerGame> computerGames = getAllUsersComputerGames();
       computerGames.forEach(computerGame -> {
         computerGame.getUsers().remove(user);
         computerGameService.save(computerGame);

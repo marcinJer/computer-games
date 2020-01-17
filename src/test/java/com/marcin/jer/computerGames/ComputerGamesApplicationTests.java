@@ -1,4 +1,4 @@
-package com.example.ComputerGames;
+package com.marcin.jer.computerGames;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ public class ComputerGamesApplicationTests {
      */
     @Test
     public void shouldBeValidWhenGameNameIsEmpty() {
-        ComputerGame computerGame = new ComputerGame("", TypesOfGames.Action, 18, "CdProject RED", 1);
+        ComputerGame computerGame = new ComputerGame("", TypesOfGames.Action, 18);
         boolean result = ComputerGameValidator.areValuesEmpty(computerGame);
         assertThat(result).isTrue();
     }
@@ -27,7 +27,7 @@ public class ComputerGamesApplicationTests {
      */
     @Test
     public void shouldBeValidWhenGameTypeIsEmpty() {
-        ComputerGame computerGame = new ComputerGame("Gothic", null, 12, "Piranha Bytes", 1);
+        ComputerGame computerGame = new ComputerGame("Gothic", null, 12);
         boolean result = ComputerGameValidator.areValuesEmpty(computerGame);
         assertThat(result).isTrue();
     }
@@ -37,17 +37,7 @@ public class ComputerGamesApplicationTests {
      */
     @Test
     public void shouldBeValidWhenAllowedAgeIsEmpty() {
-        ComputerGame computerGame = new ComputerGame("Mafia", TypesOfGames.Action, null, "Illusion Softworks", 1);
-        boolean result = ComputerGameValidator.areValuesEmpty(computerGame);
-        assertThat(result).isTrue();
-    }
-
-    /**
-     * Method to test if there is empty manufacturer field
-     */
-    @Test
-    public void shouldBeValidWhenManufacturerIsEmpty() {
-        ComputerGame computerGame = new ComputerGame("Far Cry", TypesOfGames.FPS, 12, "", 1);
+        ComputerGame computerGame = new ComputerGame("Mafia", TypesOfGames.Action, null);
         boolean result = ComputerGameValidator.areValuesEmpty(computerGame);
         assertThat(result).isTrue();
     }
@@ -58,7 +48,7 @@ public class ComputerGamesApplicationTests {
 
     @Test
     public void shouldBeValidWhenAllowedAgeLessThanZero() {
-        ComputerGame computerGame = new ComputerGame("Fifa 18", TypesOfGames.Arcade, -12, "EA Sports", 1);
+        ComputerGame computerGame = new ComputerGame("Fifa 18", TypesOfGames.Arcade, -12);
         boolean result = ComputerGameValidator.numericValidate(computerGame);
         assertThat(result).isTrue();
     }

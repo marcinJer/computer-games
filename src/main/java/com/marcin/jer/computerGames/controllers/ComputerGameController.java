@@ -1,13 +1,12 @@
 package com.marcin.jer.computerGames.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.marcin.jer.computerGames.facades.UserComputerGameFacade;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.marcin.jer.computerGames.entities.ComputerGame;
 import com.marcin.jer.computerGames.entities.ComputerGameBasic;
 import com.marcin.jer.computerGames.entities.Review;
-import com.marcin.jer.computerGames.repositories.ReviewRepository;
 import com.marcin.jer.computerGames.services.ComputerGameService;
 import com.marcin.jer.computerGames.validators.ComputerGameValidator;
 
@@ -21,31 +20,37 @@ import java.util.stream.StreamSupport;
  */
 
 @RestController
+@RequestMapping("/games")
 public class ComputerGameController {
 
-    @Autowired
-    private ComputerGameService computerGameService;
-    @Autowired
-    private ReviewRepository reviewRepository;
+    private final ComputerGameService computerGameService;
+    private final UserComputerGameFacade userComputerGameFacade;
 
+    public ComputerGameController(
+            ComputerGameService computerGameService, UserComputerGameFacade userComputerGameFacade) {
+        this.computerGameService = computerGameService;
+        this.userComputerGameFacade = userComputerGameFacade;
+    }
 
     /**
      * GET method returns all computer games showing only id and game name
      *
-     * @param namePrefix
-     * @return
+     * @param namePrefix text needed to search computer game by
+     * @return games if any found by namePrefix
      */
-    @GetMapping("/games")
-    public List<ComputerGameBasic> getAllComputerGamesBasicInfo(@RequestParam(value = "name", required = false, defaultValue = "") String namePrefix,
-                                                                @RequestParam(value = "sort", required = false, defaultValue = "false") boolean shouldSort) {
-        List<ComputerGameBasic> games = StreamSupport.stream(computerGameService.getAllComputerGames().spliterator(), false)
-                .filter(computerGame -> computerGame.getGameName().startsWith(namePrefix))
-                .map(computerGame -> new ComputerGameBasic(computerGame))
-                .collect(Collectors.toList());
+    @GetMapping
+    public ResponseEntity<List<ComputerGameBasic>> getAllComputerGamesBasicInfo(
+            @RequestParam(value = "name", required = false, defaultValue = "") String namePrefix,
+            @RequestParam(value = "sort", required = false, defaultValue = "false") boolean shouldSort) {
+        List<ComputerGameBasic> games =
+                StreamSupport.stream(computerGameService.getAllComputerGames().spliterator(), false)
+                        .filter(computerGame -> computerGame.getGameName().startsWith(namePrefix))
+                        .map(ComputerGameBasic::new)
+                        .collect(Collectors.toList());
         if (shouldSort) {
             Collections.sort(games);
         }
-        return games;
+        return ResponseEntity.ok(games);
     }
 
     /**
@@ -54,15 +59,9 @@ public class ComputerGameController {
      * @param id Computer game's id
      * @return OK when selected computer game exists, BAD_REQUEST when computer game does not exist
      */
-
-    @GetMapping("/games/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity getComputerGameByIdWithDetails(@PathVariable int id) {
-        if (computerGameService.findIfExists(id)) {
-            ComputerGame computerGame = computerGameService.findComputerGameById(id);
-            return new ResponseEntity(computerGame, HttpStatus.OK);
-        } else {
-            return new ResponseEntity("Computer game with id = " + id + " does not exist", HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(computerGameService.getComputerGameById(id));
     }
 
     /**
@@ -71,33 +70,39 @@ public class ComputerGameController {
      * @param computerGame computer game to add
      * @return OK if computer game was added, BAD_REQUEST if provided computer game was invalid
      */
-    @PostMapping("/games")
+    @PostMapping
     public ResponseEntity addComputerGame(@RequestBody ComputerGame computerGame) {
-        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame)) {
+        if (ComputerGameValidator.areValuesEmpty(computerGame)
+                || ComputerGameValidator.numericValidate(computerGame)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
-            computerGameService.saveComputerGame(computerGame);
-            return new ResponseEntity((HttpStatus.OK));
+            return new ResponseEntity(computerGameService.addComputerGame(computerGame), HttpStatus.CREATED);
         }
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity addComputerGameToUsersCollection(@PathVariable int id) {
+        return ResponseEntity.ok(userComputerGameFacade.addComputerGameToUsersCollection(id));
     }
 
     /**
      * PUT method to edit computer game
      *
      * @param computerGame computer game to edit
-     * @param id           computer game's id
+     * @param id computer game's id
      * @return OK when computer game was edited , BAD_REQUEST when computer game hasn't been edited
      */
-    @PutMapping("/games/{id}")
-    public ResponseEntity updateComputerGame(@RequestBody ComputerGame computerGame, @PathVariable int id) {
+    @PutMapping("/{id}")
+    public ResponseEntity updateComputerGame(
+            @RequestBody ComputerGame computerGame, @PathVariable int id) {
 
-        if (ComputerGameValidator.areValuesEmpty(computerGame) || ComputerGameValidator.numericValidate(computerGame) || (computerGameService.findComputerGameById(id) == null)) {
+        if (ComputerGameValidator.areValuesEmpty(computerGame)
+                || ComputerGameValidator.numericValidate(computerGame)
+                || (computerGameService.getComputerGameById(id) == null)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } else {
             computerGame.setId(id);
-            computerGameService.saveComputerGame(computerGame);
-
-            return new ResponseEntity((HttpStatus.OK));
+            return ResponseEntity.ok(computerGameService.addComputerGame(computerGame));
         }
     }
 
@@ -106,19 +111,16 @@ public class ComputerGameController {
      *
      * @param id computer game id
      */
-    @DeleteMapping("/games/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteComputerGame(@PathVariable int id) {
-        if (computerGameService.findIfExists(id)) {
-            computerGameService.deleteComputerGameById(id);
-            return new ResponseEntity(HttpStatus.OK);
-        }else return new ResponseEntity(HttpStatus.NOT_FOUND);
+        userComputerGameFacade.deleteComputerGameByIdFromSystem(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/games/{computerGameId}/reviews")
+    @PostMapping("/{computerGameId}/review")
     public ResponseEntity addReviewToComputerGame(@RequestBody Review review, @PathVariable int computerGameId) {
-        if (computerGameService.findIfExists(computerGameId)) {
-            computerGameService.addReviewToComputerGame(review, computerGameId);
-            return new ResponseEntity(HttpStatus.OK);
+        if (computerGameService.findOutIfExists(computerGameId)) {
+            return ResponseEntity.ok(computerGameService.addReviewToComputerGame(review, computerGameId));
         } else return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }
