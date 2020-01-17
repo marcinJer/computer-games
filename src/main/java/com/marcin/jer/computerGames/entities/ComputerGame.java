@@ -4,73 +4,91 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marcin.jer.computerGames.enums.TypesOfGames;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "computer_game")
 public class ComputerGame {
 
-  /** Computer game's fields */
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    /**
+     * Computer game's fields
+     */
+    @Id
+    @GeneratedValue
+    private Integer id;
+    private String gameName;
+    private TypesOfGames gameType;
+    private Integer allowedAge;
+    private String manufacturer;
 
-  @NotNull private String gameName;
+    @OneToMany(mappedBy = "computerGame", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 
-  @Enumerated @NotNull private TypesOfGames gameType;
+    /**
+     * Computer game's constructor
+     *
+     * @param gameName     Computer game's name
+     * @param gameType     Computer game's type
+     * @param allowedAge   Computer game's allowed age
+     * @param manufacturer Computer game's manufacturer
+     * @param id           Computer game's id
+     */
+    public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge, String manufacturer, Integer id) {
+        this.gameName = gameName;
+        this.gameType = gameType;
+        this.allowedAge = allowedAge;
+        this.manufacturer = manufacturer;
+    }
 
-  @NotNull private Integer allowedAge;
+    public ComputerGame() {
+    }
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(
-      name = "game_users",
-      joinColumns = {@JoinColumn(name = "computer_game_id", referencedColumnName = "id")},
-      inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
-  private Set<User> users;
+    @JsonIgnore
+    public List<Review> getReviews() {
+        return reviews;
+    }
 
-  public ComputerGame() {}
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
-  public ComputerGame(String gameName, TypesOfGames gameType, Integer allowedAge) {
-    this.gameName = gameName;
-    this.gameType = gameType;
-    this.allowedAge = allowedAge;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  @JsonIgnore
-  public Set<User> getUsers() {
-    return users;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public String getGameName() {
+        return gameName;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
 
-  public String getGameName() {
-    return gameName;
-  }
+    public TypesOfGames getGameType() {
+        return gameType;
+    }
 
-  public void setGameName(String gameName) {
-    this.gameName = gameName;
-  }
+    public void setGameType(TypesOfGames gameType) {
+        this.gameType = gameType;
+    }
 
-  public TypesOfGames getGameType() {
-    return gameType;
-  }
+    public Integer getAllowedAge() {
+        return allowedAge;
+    }
 
-  public void setGameType(TypesOfGames gameType) {
-    this.gameType = gameType;
-  }
+    public void setAllowedAge(Integer allowedAge) {
+        this.allowedAge = allowedAge;
+    }
 
-  public Integer getAllowedAge() {
-    return allowedAge;
-  }
+    public String getManufacturer() {
+        return manufacturer;
+    }
 
-  public void setAllowedAge(Integer allowedAge) {
-    this.allowedAge = allowedAge;
-  }
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 }
